@@ -1,7 +1,8 @@
-import bcryptjs from "bcryptjs";
-import User from "../models/User.js";
+const bcryptjs = require("bcryptjs");
 
-export const register = async (req, res) => {
+const User = require("../models/User");
+
+exports.register = async (req, res) => {
   if (!req.body.name || !req.body.email || !req.body.password) {
     return res.json('Required fields are "name", "email", and "password"');
   }
@@ -19,8 +20,8 @@ export const register = async (req, res) => {
     return res.status(201).json("New user created");
   } catch (err) {
     console.log(err);
-    return req.json("Server error");
+    return res.json("Server error");
   }
 };
 
-export const login = () => {};
+exports.login = () => {};

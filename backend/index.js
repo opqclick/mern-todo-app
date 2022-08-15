@@ -1,22 +1,30 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import "dotenv/config";
-import morgan from "morgan";
-import cookieParser from "cookie-parser";
-import allRoutes from "./routes/index.js";
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 
-const PORT = process.env.PORT || 8000;
+require("dotenv").config();
+
+const authRoutes = require("./routes/auth");
+
+const _PORT = process.env.PORT || 4000;
+
 const app = express();
 
-//Middleware
-app.use(cors);
-app.use(morgan("tiny"));
+app.use(cors());
 app.use(express.json());
-app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+app.use("/api/auth", authRoutes);
 
-//Routes
-app.use("/api", allRoutes);
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: true,
+    message: "Welcome",
+  });
+});
+
+app.listen(_PORT, () => {
+  console.log(`Server is running at http://localhost:${_PORT}`);
+});
 
 const connectDB = async () => {
   try {
@@ -28,7 +36,4 @@ const connectDB = async () => {
   }
 };
 
-app.listen(PORT, () => {
-  connectDB();
-  console.log(`Server is running at port ${PORT}`);
-});
+connectDB();
