@@ -24,4 +24,8 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.login = () => {};
+exports.login = (req, res) => {
+    return res.json({
+      status: true
+    })
+};  
